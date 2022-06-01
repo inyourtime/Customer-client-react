@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Login from "./components/Login";
+import Edit from "./components/Edit";
+import { useEffect, useState } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const setAuth = (boolean) => {
+        setIsAuthenticated(boolean);
+    };
+
+    const SwitchPage = ({ isAuthenticated }) => {
+        if (!isAuthenticated) {
+            return <Login setAuth={setAuth} />;
+        } else {
+            return <Edit setAuth={setAuth} />;
+        }
+    };
+
+    async function isAuth() {
+        try {
+            const response = await fetch(
+                "http://localhost:3001/customer/is-verify",
+                {
+                    method: "GET",
+                    headers: { token: localStorage.token },
+                }
+            );
+            const parseRes = await response.json();
+            parseRes === true
+                ? setIsAuthenticated(true)
+                : setIsAuthenticated(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        isAuth();
+    }, []);
+
+    return (
+        <div className="App">
+            <SwitchPage isAuthenticated={isAuthenticated} />
+        </div>
+    );
 }
 
 export default App;
