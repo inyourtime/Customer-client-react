@@ -1,18 +1,39 @@
 import React, { useState, useEffect } from "react";
 import EditAccount from "./EditAccount";
 import EditInfo from "./EditInfo";
+import Navbar from "./Navbar";
+import UserAccountBox from "./UserAccountBox";
+import UserInfoBox from "./UserInfoBox";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Edit = ({ setAuth }) => {
     const [userAccount, setUserAccount] = useState({});
-
     const [userInfo, setUserInfo] = useState({});
+    const [openUserAccountUpdateForm, setOpenUserAccountUpdateForm] =
+        useState(false);
+    const [openUserInfoUpdateForm, setOpenUserInfoUpdateForm] = useState(false);
 
-    const changeUserAccountHandler = (e) => {
-        setUserAccount({ ...userAccount, [e.target.name]: e.target.value });
+    const handleClickOpenUserAccountUpdateForm = () => {
+        setOpenUserAccountUpdateForm(true);
     };
 
-    const changeUserInfoHandler = (e) => {
-        setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+    const handleClickCloseUserAccountUpdateForm = () => {
+        setOpenUserAccountUpdateForm(false);
+    };
+
+    const handleClickOpenUserInfoUpdateForm = () => {
+        setOpenUserInfoUpdateForm(true);
+    };
+
+    const handleClickCloseUserInfoUpdateForm = () => {
+        setOpenUserInfoUpdateForm(false);
     };
 
     const logout = (e) => {
@@ -37,36 +58,90 @@ const Edit = ({ setAuth }) => {
 
     useEffect(() => {
         getInfo();
-    }, []);
+    }, [openUserAccountUpdateForm, openUserInfoUpdateForm]);
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-                <div className="container">
-                    <div className="navbar-brand" style={{ color: "white" }}>
-                        Account Update
+            <Navbar logout={logout} />
+            {/* <div className="edit-wrapper"> */}
+            <Container>
+                <div style={{ marginBottom: "100px" }}>
+                    <div className="edit-grid">
+                        <UserAccountBox
+                            userAccount={userAccount}
+                            handleClickOpenUserAccountUpdateForm={
+                                handleClickOpenUserAccountUpdateForm
+                            }
+                        />
+                        <UserInfoBox
+                            userInfo={userInfo}
+                            handleClickOpenUserInfoUpdateForm={
+                                handleClickOpenUserInfoUpdateForm
+                            }
+                        />
                     </div>
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <a
-                                href=""
-                                className="nav-link active"
-                                style={{ color: "white" }}
-                                onClick={(e) => logout(e)}
+                    <Dialog
+                        open={openUserAccountUpdateForm}
+                        onClose={handleClickCloseUserAccountUpdateForm}
+                        maxWidth="xs"
+                        fullWidth="true"
+                    >
+                        <DialogTitle>Update Your Account</DialogTitle>
+                        <DialogContent dividers>
+                            <EditAccount userAccount={userAccount} />
+                        </DialogContent>
+                        <DialogActions>
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleClickCloseUserAccountUpdateForm}
+                                sx={{
+                                    position: "absolute",
+                                    right: 8,
+                                    top: 8,
+                                    color: (theme) => theme.palette.grey[500],
+                                }}
                             >
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
+                                <CloseIcon />
+                            </IconButton>
+                            <Button
+                                onClick={handleClickCloseUserAccountUpdateForm}
+                            >
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog
+                        open={openUserInfoUpdateForm}
+                        onClose={handleClickCloseUserInfoUpdateForm}
+                        maxWidth="md"
+                        fullWidth="true"
+                    >
+                        <DialogTitle>Update Your Info</DialogTitle>
+                        <DialogContent dividers>
+                            <EditInfo userInfo={userInfo} />
+                        </DialogContent>
+                        <DialogActions>
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleClickCloseUserInfoUpdateForm}
+                                sx={{
+                                    position: "absolute",
+                                    right: 8,
+                                    top: 8,
+                                    color: (theme) => theme.palette.grey[500],
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Button
+                                onClick={handleClickCloseUserInfoUpdateForm}
+                            >
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
-            </nav>
-            <div className="edit-wrapper">
-                <div className="edit-grid">
-                    <EditAccount userAccount={userAccount} />
-                    <EditInfo userInfo={userInfo} />
-                    {/* <button onClick={(e) => logout(e)}>logout</button> */}
-                </div>
-            </div>
+            </Container>
         </>
     );
 };

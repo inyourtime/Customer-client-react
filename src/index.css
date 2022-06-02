@@ -5,11 +5,14 @@
 }
 
 body {
-	background: #1C8EF9 !important;
-	min-height: 100vh;
+	background: #ced2d6 !important;
+	/* min-height: 100vh; */
 	display: flex;
 	font-weight: 400;
 	font-family: 'Fira Sans', sans-serif;
+	margin: 0;
+	padding: 0;
+	/* margin-bottom: 100px; */
 }
 
 h1,
@@ -20,7 +23,7 @@ h5,
 h6,
 label,
 span {
-	font-weight: 500;
+	font-weight: 200;
 	font-family: 'Fira Sans', sans-serif;
 }
 
@@ -31,25 +34,27 @@ html,
 .auth-wrapper,
 .edit-wrapper {
 	width: 100%;
-	height: 100%;
+	/* height: 100%; */
 }
 
-.navbar-light {
+/* .navbar-light {
 	background-color: black;
 	box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 	opacity: 0.8;
-}
+} */
 
 .auth-wrapper {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	text-align: left;
+	/* margin: auto; */
 }
 
 .auth-inner {
 	width: 450px;
 	margin: auto;
+	margin-top: 200px;
 	background: #ffffff;
 	box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 	padding: 40px 55px 45px 55px;
@@ -57,21 +62,22 @@ html,
 	transition: all .3s;
 }
 
-.auth-wrapper .form-control:focus {
+/* .auth-wrapper .form-control:focus {
 	border-color: #167bff;
 	box-shadow: none;
-}
+} */
 
-.auth-wrapper h3 {
+.auth-wrapper h4 {
+	font-size: 24px;
 	text-align: center;
 	margin: 0;
 	line-height: 1;
 	padding-bottom: 20px;
 }
 
-.custom-control-label {
+/* .custom-control-label {
 	font-weight: 400;
-}
+} */
 
 .edit-wrapper {
 	display: flex;
@@ -81,16 +87,17 @@ html,
 }
 
 .edit-account-inner {
-	width: 450px;
+	width: 100%;
 	margin: auto;
+	margin-top: 50%;
 	background: #ffffff;
 	box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-	padding: 40px 55px 45px 55px;
-	border-radius: 15px;
+	/* padding: 40px 55px 45px 55px; */
+	/* border-radius: 15px; */
 	transition: all .3s;
 }
 
-.edit-wrapper .form-control:focus {
+/* .edit-wrapper .form-control:focus {
 	border-color: #167bff;
 	box-shadow: none;
 }
@@ -100,7 +107,7 @@ html,
 	margin: 0;
 	line-height: 1;
 	padding-bottom: 20px;
-}
+} */
 
 .edit-grid {
 	display: grid;
@@ -109,21 +116,21 @@ html,
 	row-gap: 16px;
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 1300px;
+	/* max-width: 1500px; */
+	margin-top: 5%;
+	/* margin-bottom: 100px; */
 }
 
 .edit-info-inner {
-	width: 800px;
+	width: 100%;
 	margin: auto;
-	margin-top: 15%;
+	margin-top: 50%;
 	background: #ffffff;
 	box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-	padding: 40px 55px 45px 55px;
-	border-radius: 15px;
 	transition: all .3s;
 }
 
-.edit-info-grid {
+/* .edit-info-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	column-gap: 16px;
@@ -131,8 +138,9 @@ html,
 	margin-left: auto;
 	margin-right: auto;
 	max-width: 800px;
-}
+} */
 
 .error {
 	color: red;
+	font-size: 12px;
 }

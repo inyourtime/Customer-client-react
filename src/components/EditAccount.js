@@ -1,8 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { TextField, Button } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 const EditAccount = ({ userAccount }) => {
+    const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
+
+    const AlertUpdateSuccess = ({ isUpdateSuccess }) => {
+        if (isUpdateSuccess) {
+            return (
+                <Alert severity="success">
+                    <AlertTitle>Success</AlertTitle>
+                    This is a success alert — <strong>check it out!</strong>
+                </Alert>
+            );
+        }
+    };
+
     const userAccountUpdateHandler = async (values) => {
         // e.preventDefault();
         const payload = {
@@ -22,7 +38,10 @@ const EditAccount = ({ userAccount }) => {
                 }
             );
             const parseRes = await response.json();
-            console.log(parseRes);
+            if (parseRes.message === "ok") {
+                setIsUpdateSuccess(true);
+            }
+            console.log(parseRes.message);
         } catch (error) {
             console.error(error.message);
         }
@@ -42,48 +61,45 @@ const EditAccount = ({ userAccount }) => {
     });
 
     return (
-        <div className="edit-account-inner">
-            <h3>Update Account</h3>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter username"
-                        id="username"
-                        name="username"
-                        onChange={formik.handleChange}
-                        value={formik.values.username}
-                        onBlur={formik.handleBlur}
-                    />
-                    {formik.touched.username && formik.errors.username ? (
-                        <div className="error">{formik.errors.username}</div>
-                    ) : null}
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter password"
-                        id="password"
-                        name="password"
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                        onBlur={formik.handleBlur}
-                    />
-                    {formik.touched.password && formik.errors.password ? (
-                        <div className="error">{formik.errors.password}</div>
-                    ) : null}
-                </div>
-                <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">
-                        Submit
-                    </button>
-                </div>
-            </form>
-        </div>
+        <form onSubmit={formik.handleSubmit}>
+            <AlertUpdateSuccess isUpdateSuccess={isUpdateSuccess} />
+            <TextField
+                label="Username *"
+                fullWidth
+                margin="normal"
+                id="username"
+                name="username"
+                onChange={formik.handleChange}
+                value={formik.values.username}
+                onBlur={formik.handleBlur}
+            />
+            {formik.touched.username && formik.errors.username ? (
+                <div className="error">{formik.errors.username}</div>
+            ) : null}
+            <TextField
+                label="Password *"
+                fullWidth
+                margin="normal"
+                id="password"
+                name="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+            />
+            {formik.touched.password && formik.errors.password ? (
+                <div className="error">{formik.errors.password}</div>
+            ) : null}
+            <Button
+                sx={{ mt: 2 }}
+                fullWidth
+                size="medium"
+                variant="contained"
+                color="info"
+                type="submit"
+            >
+                Submit
+            </Button>
+        </form>
     );
 };
 

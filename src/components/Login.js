@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Button, TextField, Alert } from "@mui/material";
+import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import Avatar from "@mui/material/Avatar";
+import { pink } from "@mui/material/colors";
 
 const Login = ({ setAuth }) => {
     const [isIncorrect, setIsIncorrect] = useState(false);
@@ -53,8 +57,12 @@ const Login = ({ setAuth }) => {
     const AlertUsernameOrPasswordIncorrect = ({ isIncorrect }) => {
         if (isIncorrect) {
             return (
-                <div className="error">username or password are incorrect</div>
+                <Alert severity="error" sx={{ mt: 1 }}>
+                    Username or password are incorrect!
+                </Alert>
             );
+        } else {
+            return;
         }
     };
 
@@ -62,13 +70,15 @@ const Login = ({ setAuth }) => {
         <div className="auth-wrapper">
             <div className="auth-inner">
                 <form onSubmit={formik.handleSubmit}>
-                    <h3>Sign In</h3>
-                    <div className="mb-3">
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter username"
+                    <Avatar sx={{ bgcolor: pink[500], mx: "auto", mb: 1 }}>
+                        <LockRoundedIcon fontSize="medium" />
+                    </Avatar>
+                    <h4>Sign In</h4>
+                    <div>
+                        <TextField
+                            label="Username *"
+                            fullWidth
+                            margin="normal"
                             id="username"
                             name="username"
                             onChange={formik.handleChange}
@@ -80,13 +90,11 @@ const Login = ({ setAuth }) => {
                                 {formik.errors.username}
                             </div>
                         ) : null}
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="password">Password</label>
-                        <input
+                        <TextField
+                            label="Password *"
                             type="password"
-                            className="form-control"
-                            placeholder="Enter password"
+                            fullWidth
+                            margin="normal"
                             id="password"
                             name="password"
                             onChange={formik.handleChange}
@@ -99,16 +107,19 @@ const Login = ({ setAuth }) => {
                             </div>
                         ) : null}
                     </div>
-                    <div className="mb-3">
-                        <AlertUsernameOrPasswordIncorrect
-                            isIncorrect={isIncorrect}
-                        />
-                    </div>
-                    <div className="d-grid">
-                        <button type="submit" className="btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
+                    <AlertUsernameOrPasswordIncorrect
+                        isIncorrect={isIncorrect}
+                    />
+                    <Button
+                        sx={{ mt: 2 }}
+                        fullWidth
+                        size="medium"
+                        variant="contained"
+                        color="info"
+                        type="submit"
+                    >
+                        Sign In
+                    </Button>
                 </form>
             </div>
         </div>

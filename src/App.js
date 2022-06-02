@@ -1,8 +1,7 @@
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/Login";
 import Edit from "./components/Edit";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,9 +41,12 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
+        <Fragment>
             <SwitchPage isAuthenticated={isAuthenticated} />
-        </div>
+        </Fragment>
+        // <div className="App">
+
+        // </div>
     );
 }
 
