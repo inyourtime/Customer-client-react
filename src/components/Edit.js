@@ -12,6 +12,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import DialogContentText from "@mui/material/DialogContentText";
 
 const Edit = ({ setAuth }) => {
     const [userAccount, setUserAccount] = useState({});
@@ -19,6 +20,7 @@ const Edit = ({ setAuth }) => {
     const [openUserAccountUpdateForm, setOpenUserAccountUpdateForm] =
         useState(false);
     const [openUserInfoUpdateForm, setOpenUserInfoUpdateForm] = useState(false);
+    const [openConfirmLogoutAlert, setOpenConfirmLogoutAlert] = useState(false);
 
     const handleClickOpenUserAccountUpdateForm = () => {
         setOpenUserAccountUpdateForm(true);
@@ -36,6 +38,14 @@ const Edit = ({ setAuth }) => {
         setOpenUserInfoUpdateForm(false);
     };
 
+    const handleClickOpenConfirmLogoutAlert = () => {
+        setOpenConfirmLogoutAlert(true);
+    };
+
+    const handleClickCloseConfirmLogoutAlert = () => {
+        setOpenConfirmLogoutAlert(false);
+    };
+
     const logout = (e) => {
         e.preventDefault();
         localStorage.removeItem("token");
@@ -44,7 +54,7 @@ const Edit = ({ setAuth }) => {
 
     async function getInfo() {
         try {
-            const response = await fetch("http://localhost:3001/customer", {
+            const response = await fetch("http://localhost:8000/customer", {
                 method: "GET",
                 headers: { token: localStorage.token },
             });
@@ -62,7 +72,11 @@ const Edit = ({ setAuth }) => {
 
     return (
         <>
-            <Navbar logout={logout} />
+            <Navbar
+                handleClickOpenConfirmLogoutAlert={
+                    handleClickOpenConfirmLogoutAlert
+                }
+            />
             {/* <div className="edit-wrapper"> */}
             <Container>
                 <div style={{ marginBottom: "100px" }}>
@@ -80,6 +94,7 @@ const Edit = ({ setAuth }) => {
                             }
                         />
                     </div>
+                    {/* User Account Form Dialog */}
                     <Dialog
                         open={openUserAccountUpdateForm}
                         onClose={handleClickCloseUserAccountUpdateForm}
@@ -110,13 +125,14 @@ const Edit = ({ setAuth }) => {
                             </Button>
                         </DialogActions>
                     </Dialog>
+                    {/* User Info Form Dialog */}
                     <Dialog
                         open={openUserInfoUpdateForm}
                         onClose={handleClickCloseUserInfoUpdateForm}
                         maxWidth="md"
                         fullWidth="true"
                     >
-                        <DialogTitle>Update Your Info</DialogTitle>
+                        <DialogTitle>Update Your Information</DialogTitle>
                         <DialogContent dividers>
                             <EditInfo userInfo={userInfo} />
                         </DialogContent>
@@ -137,6 +153,34 @@ const Edit = ({ setAuth }) => {
                                 onClick={handleClickCloseUserInfoUpdateForm}
                             >
                                 Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                    {/* Confirm Logout Alert */}
+                    <Dialog
+                        open={openConfirmLogoutAlert}
+                        onClose={handleClickCloseConfirmLogoutAlert}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {"Are you sure to logout?"}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Let Google help apps determine location. This
+                                means sending anonymous location data to Google,
+                                even when no apps are running.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={handleClickCloseConfirmLogoutAlert}
+                            >
+                                Not yet
+                            </Button>
+                            <Button onClick={(e) => logout(e)} autoFocus>
+                                Confirm
                             </Button>
                         </DialogActions>
                     </Dialog>

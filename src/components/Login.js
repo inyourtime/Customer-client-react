@@ -18,7 +18,7 @@ const Login = ({ setAuth }) => {
         // console.log(payload)
         try {
             const response = await fetch(
-                "http://localhost:3001/customer/login",
+                "http://localhost:8000/customer/login",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

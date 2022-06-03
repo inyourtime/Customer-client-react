@@ -42,7 +42,7 @@ const EditInfo = ({ userInfo }) => {
         // alert(JSON.stringify(payload))
         try {
             const response = await fetch(
-                `http://localhost:3001/customer/update-details/${userInfo.id}`,
+                `http://localhost:8000/customer/update-details/${userInfo.id}`,
                 {
                     method: "PUT",
                     headers: {

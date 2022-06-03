@@ -27,7 +27,7 @@ const EditAccount = ({ userAccount }) => {
         };
         try {
             const response = await fetch(
-                `http://localhost:3001/customer/update-account/${userAccount.id}`,
+                `http://localhost:8000/customer/update-account/${userAccount.id}`,
                 {
                     method: "PUT",
                     headers: {

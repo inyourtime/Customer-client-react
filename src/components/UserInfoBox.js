@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import {
     Button,
     Table,
@@ -21,7 +22,7 @@ const UserInfoBox = ({ userInfo, handleClickOpenUserInfoUpdateForm }) => {
                 padding: "15px 15px 15px 15px",
             }}
         >
-            <h2>My Information</h2>
+            <h2><span><ImportContactsIcon/></span> My Information</h2>
             <hr />
             <TableContainer component={Paper} sx={{ mt: 2 }}>
                 <Table sx={{ minWidth: "auto" }} aria-label="simple table">

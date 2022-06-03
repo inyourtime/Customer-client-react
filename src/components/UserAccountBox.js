@@ -9,6 +9,7 @@ import {
     TableRow,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
+import DnsIcon from '@mui/icons-material/Dns';
 
 const UserAccountBox = ({ userAccount, handleClickOpenUserAccountUpdateForm }) => {
     return (
@@ -25,7 +26,7 @@ const UserAccountBox = ({ userAccount, handleClickOpenUserAccountUpdateForm }) =
                 // }
             }}
         >
-            <h2>My Account</h2>
+            <h2><span><DnsIcon/></span> My Account</h2>
             <hr />
             <TableContainer component={Paper} sx={{ mt: 2 }}>
                 <Table sx={{ minWidth: "auto" }} aria-label="simple table">
