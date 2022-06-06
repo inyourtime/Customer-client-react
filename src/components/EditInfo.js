@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Box, TextField, Button } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import apiUrl from "../utils/ApiEndPoint";
 
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -42,7 +43,7 @@ const EditInfo = ({ userInfo }) => {
         // alert(JSON.stringify(payload))
         try {
             const response = await fetch(
-                `http://localhost:8000/customer/update-details/${userInfo.id}`,
+                apiUrl.url + `/customer/details/${userInfo.id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -52,11 +53,11 @@ const EditInfo = ({ userInfo }) => {
                     body: JSON.stringify(payload),
                 }
             );
-            const parseRes = await response.json();
-            if (parseRes.message === "ok") {
+            const data = await response.json();
+            if (data.message === "ok") {
                 setIsUpdateSuccess(true);
             }
-            console.log(parseRes.message);
+            console.log(data.message);
         } catch (error) {
             console.error(error.message);
         }
@@ -111,7 +112,7 @@ const EditInfo = ({ userInfo }) => {
                         label="CID *"
                         fullWidth
                         margin="normal"
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="cid"
                         name="cid"
                         onChange={formik.handleChange}
@@ -127,7 +128,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Thai. prename *"
                         fullWidth
                         margin="normal"
-                        sx={{ width: "20ch", mx: 1, mt: 2 }}
+                        sx={{ width: "20ch", mr: 2, mt: 2 }}
                         id="th_prename"
                         name="th_prename"
                         onChange={formik.handleChange}
@@ -141,7 +142,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Thai. firstname *"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="th_fname"
                         name="th_fname"
                         onChange={formik.handleChange}
@@ -155,7 +156,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Thai. lastname *"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="th_lname"
                         name="th_lname"
                         onChange={formik.handleChange}
@@ -171,7 +172,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Eng. prename *"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "20ch", mx: 1, mt: 2 }}
+                        sx={{ width: "20ch", mr: 2, mt: 2 }}
                         id="en_prename"
                         name="en_prename"
                         onChange={formik.handleChange}
@@ -185,7 +186,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Eng. firstname *"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="en_fname"
                         name="en_fname"
                         onChange={formik.handleChange}
@@ -199,7 +200,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Eng. lastname *"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="en_lname"
                         name="en_lname"
                         onChange={formik.handleChange}
@@ -215,7 +216,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Address *"
                         fullWidth
                         margin="normal"
-                        sx={{ mx: 1, mt: 2 }}
+                        sx={{ mr: 2, mt: 2 }}
                         id="address"
                         name="address"
                         onChange={formik.handleChange}
@@ -232,7 +233,7 @@ const EditInfo = ({ userInfo }) => {
                         type="email"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="email"
                         name="email"
                         onChange={formik.handleChange}
@@ -246,7 +247,7 @@ const EditInfo = ({ userInfo }) => {
                         label="Phone number"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="phone"
                         name="phone"
                         onChange={formik.handleChange}
@@ -263,7 +264,7 @@ const EditInfo = ({ userInfo }) => {
                         type="date"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="DOB"
                         name="DOB"
                         onChange={formik.handleChange}
@@ -278,7 +279,7 @@ const EditInfo = ({ userInfo }) => {
                         type="date"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="issue_date"
                         name="issue_date"
                         onChange={formik.handleChange}
@@ -293,7 +294,7 @@ const EditInfo = ({ userInfo }) => {
                         type="date"
                         margin="normal"
                         fullWidth
-                        sx={{ width: "30ch", mx: 1, mt: 2 }}
+                        sx={{ width: "30ch", mr: 2, mt: 2 }}
                         id="exp_date"
                         name="exp_date"
                         onChange={formik.handleChange}

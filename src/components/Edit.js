@@ -13,6 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import DialogContentText from "@mui/material/DialogContentText";
+import apiUrl from "../utils/ApiEndPoint";
 
 const Edit = ({ setAuth }) => {
     const [userAccount, setUserAccount] = useState({});
@@ -54,13 +55,14 @@ const Edit = ({ setAuth }) => {
 
     async function getInfo() {
         try {
-            const response = await fetch("http://localhost:8000/customer", {
+            const response = await fetch(apiUrl.url + "/customer", {
                 method: "GET",
                 headers: { token: localStorage.token },
             });
-            const parseRes = await response.json();
-            setUserAccount(parseRes.user[0]);
-            setUserInfo(parseRes.user_info[0]);
+            const data = await response.json();
+            console.log(data)
+            setUserAccount(data.user[0]);
+            setUserInfo(data.user_info[0]);
         } catch (error) {
             console.error(error);
         }
@@ -186,6 +188,9 @@ const Edit = ({ setAuth }) => {
                     </Dialog>
                 </div>
             </Container>
+            {/* <div className="footer-container">
+                <p>Copyright 2022</p>
+            </div> */}
         </>
     );
 };

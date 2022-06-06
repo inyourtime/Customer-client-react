@@ -54,7 +54,7 @@ html,
 .auth-inner {
 	width: 450px;
 	margin: auto;
-	margin-top: 200px;
+	margin-top: 150px;
 	background: #ffffff;
 	box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 	padding: 40px 55px 45px 55px;
@@ -73,6 +73,14 @@ html,
 	margin: 0;
 	line-height: 1;
 	padding-bottom: 20px;
+}
+
+.auth-wrapper h5 {
+	font-size: 18px;
+	text-align: center;
+	margin: 15px;
+	line-height: 1;
+	/* padding-bottom: 20px; */
 }
 
 /* .custom-control-label {
@@ -143,4 +151,34 @@ html,
 .error {
 	color: red;
 	font-size: 12px;
+}
+
+.btnFacebook {
+	width: 183px;
+	height: 35px;
+	border-radius: 4px;
+	background: #3b5998;
+	color: white;
+	border: 0px transparent;
+	text-align: center;
+	/* margin: 5px; */
+	display: inline-block;
+}
+
+.btn-wrapper-google {
+	text-align: center;
+}
+
+.google {
+	margin-bottom: 10px;
+}
+
+.footer-container {
+	text-align: center;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	background-color: #333;
+	/* padding: 1px; */
+	color: white;
 }

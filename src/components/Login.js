@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Button, TextField, Alert } from "@mui/material";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import Avatar from "@mui/material/Avatar";
 import { pink } from "@mui/material/colors";
+import { GoogleLogin } from "react-google-login";
+import FacebookLogin from "react-facebook-login";
+
+import { gapi } from "gapi-script";
+import apiUrl from "../utils/ApiEndPoint";
 
 const Login = ({ setAuth }) => {
     const [isIncorrect, setIsIncorrect] = useState(false);
@@ -17,18 +22,77 @@ const Login = ({ setAuth }) => {
         };
         // console.log(payload)
         try {
+            const response = await fetch(apiUrl.url + "/customer/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            const data = await response.json();
+            // console.log(parseRes)
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+                // console.log(parseRes.token);
+                setAuth(true);
+                setIsIncorrect(false);
+            } else {
+                setAuth(false);
+                setIsIncorrect(true);
+                // console.log(isIncorrect)
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+    const googleLoginHandler = async (googleData) => {
+        // console.log(googleData);
+        try {
             const response = await fetch(
-                "http://localhost:8000/customer/login",
+                apiUrl.url + "/customer/login/google",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        token: googleData.tokenId,
+                    }),
+                }
+            );
+            const data = await response.json();
+            // console.log(data);
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+                // console.log(parseRes.token);
+                setAuth(true);
+                setIsIncorrect(false);
+            } else {
+                setAuth(false);
+                setIsIncorrect(true);
+                // console.log(isIncorrect)
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+    const facebookLoginHandler = async (facebookData) => {
+        const payload = {
+            name: facebookData.name,
+            email: facebookData.email,
+        };
+        // console.log(payload);
+        try {
+            const response = await fetch(
+                apiUrl.url + "/customer/login/facebook",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload),
                 }
             );
-            const parseRes = await response.json();
-            // console.log(parseRes)
-            if (parseRes.token) {
-                localStorage.setItem("token", parseRes.token);
+            const data = await response.json();
+            // console.log(data);
+            if (data.token) {
+                localStorage.setItem("token", data.token);
                 // console.log(parseRes.token);
                 setAuth(true);
                 setIsIncorrect(false);
@@ -65,6 +129,17 @@ const Login = ({ setAuth }) => {
             return;
         }
     };
+
+    useEffect(() => {
+        function start() {
+            gapi.client.init({
+                clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+                scope: "email",
+            });
+        }
+
+        gapi.load("client:auth2", start);
+    }, []);
 
     return (
         <div className="auth-wrapper">
@@ -120,6 +195,30 @@ const Login = ({ setAuth }) => {
                     >
                         Sign In
                     </Button>
+                    <h5>Or</h5>
+                    <div className="btn-wrapper-google">
+                        <div className="google">
+                            <GoogleLogin
+                                clientId={
+                                    process.env.REACT_APP_GOOGLE_CLIENT_ID
+                                }
+                                // buttonText="Login"
+                                onSuccess={googleLoginHandler}
+                                onFailure={googleLoginHandler}
+                                cookiePolicy={"single_host_origin"}
+                            />
+                        </div>
+                        <FacebookLogin
+                            appId="767912470866812"
+                            autoLoad={false}
+                            fields="name,email,picture"
+                            callback={facebookLoginHandler}
+                            size="small"
+                            cssClass="fa fa-facebook btnFacebook"
+                            // icon="fa-facebook"
+                            textButton="&nbsp;&nbsp;Sign in with Facebook"
+                        />
+                    </div>
                 </form>
             </div>
         </div>

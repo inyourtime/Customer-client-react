@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { TextField, Button } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import apiUrl from "../utils/ApiEndPoint";
 
 const EditAccount = ({ userAccount }) => {
     const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
@@ -27,7 +28,7 @@ const EditAccount = ({ userAccount }) => {
         };
         try {
             const response = await fetch(
-                `http://localhost:8000/customer/update-account/${userAccount.id}`,
+                apiUrl.url + `/customer/account/${userAccount.id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -37,11 +38,11 @@ const EditAccount = ({ userAccount }) => {
                     body: JSON.stringify(payload),
                 }
             );
-            const parseRes = await response.json();
-            if (parseRes.message === "ok") {
+            const data = await response.json();
+            if (data.message === "ok") {
                 setIsUpdateSuccess(true);
             }
-            console.log(parseRes.message);
+            console.log(data.message);
         } catch (error) {
             console.error(error.message);
         }

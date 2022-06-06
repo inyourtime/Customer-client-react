@@ -2,6 +2,7 @@ import "./App.css";
 import Login from "./components/Login";
 import Edit from "./components/Edit";
 import { useEffect, useState, Fragment } from "react";
+import apiUrl from "./utils/ApiEndPoint";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,15 +21,12 @@ function App() {
 
     async function isAuth() {
         try {
-            const response = await fetch(
-                "http://localhost:8000/customer/is-verify",
-                {
-                    method: "GET",
-                    headers: { token: localStorage.token },
-                }
-            );
-            const parseRes = await response.json();
-            parseRes === true
+            const response = await fetch(apiUrl.url + "/is-verify", {
+                method: "GET",
+                headers: { token: localStorage.token },
+            });
+            const data = await response.json();
+            data === true
                 ? setIsAuthenticated(true)
                 : setIsAuthenticated(false);
         } catch (error) {
