@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EditAccount from "./EditAccount";
 import EditInfo from "./EditInfo";
+import CreateAccount from "./CreateAccount";
 import Navbar from "./Navbar";
 import UserAccountBox from "./UserAccountBox";
 import UserInfoBox from "./UserInfoBox";
@@ -21,7 +22,11 @@ const Edit = ({ setAuth }) => {
     const [openUserAccountUpdateForm, setOpenUserAccountUpdateForm] =
         useState(false);
     const [openUserInfoUpdateForm, setOpenUserInfoUpdateForm] = useState(false);
+    const [openUserAccountCreateForm, setOpenUserAccountCreateForm] =
+        useState(false);
     const [openConfirmLogoutAlert, setOpenConfirmLogoutAlert] = useState(false);
+
+    const [isHaveAccount, setIsHaveAccount] = useState(false);
 
     const handleClickOpenUserAccountUpdateForm = () => {
         setOpenUserAccountUpdateForm(true);
@@ -29,6 +34,14 @@ const Edit = ({ setAuth }) => {
 
     const handleClickCloseUserAccountUpdateForm = () => {
         setOpenUserAccountUpdateForm(false);
+    };
+
+    const handleClickOpenUserAccountCreateForm = () => {
+        setOpenUserAccountCreateForm(true);
+    };
+
+    const handleClickCloseUserAccountCreateForm = () => {
+        setOpenUserAccountCreateForm(false);
     };
 
     const handleClickOpenUserInfoUpdateForm = () => {
@@ -53,6 +66,26 @@ const Edit = ({ setAuth }) => {
         setAuth(false);
     };
 
+    async function createCreditCardCharge(payment_token, amount) {
+        const payload = {
+            email: userInfo.email,
+            name: userInfo.en_pre_name + ' ' + userInfo.en_f_name + ' ' + userInfo.en_l_name,
+            payment_token: payment_token,
+            amount: amount,
+            account_id: userAccount.id,
+            userinfo_id: userInfo.id
+        }
+        try {
+            await fetch(apiUrl.url + '/checkout-credit-card', {
+                method: "POST",
+                headers: { "Content-Type": "application/json", token: localStorage.token },
+                body: JSON.stringify(payload),
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async function getInfo() {
         try {
             const response = await fetch(apiUrl.url + "/customer", {
@@ -60,8 +93,13 @@ const Edit = ({ setAuth }) => {
                 headers: { token: localStorage.token },
             });
             const data = await response.json();
-            console.log(data)
+            console.log(data);
             setUserAccount(data.user[0]);
+            if (userAccount.username === "" && userAccount.value === "") {
+                setIsHaveAccount(false);
+            } else {
+                setIsHaveAccount(true);
+            }
             setUserInfo(data.user_info[0]);
         } catch (error) {
             console.error(error);
@@ -70,7 +108,12 @@ const Edit = ({ setAuth }) => {
 
     useEffect(() => {
         getInfo();
-    }, [openUserAccountUpdateForm, openUserInfoUpdateForm]);
+    }, [
+        openUserAccountUpdateForm,
+        openUserInfoUpdateForm,
+        isHaveAccount,
+        openUserAccountCreateForm,
+    ]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <>
@@ -88,6 +131,11 @@ const Edit = ({ setAuth }) => {
                             handleClickOpenUserAccountUpdateForm={
                                 handleClickOpenUserAccountUpdateForm
                             }
+                            handleClickOpenUserAccountCreateForm={
+                                handleClickOpenUserAccountCreateForm
+                            }
+                            isHaveAccount={isHaveAccount}
+                            createCreditCardCharge={createCreditCardCharge}
                         />
                         <UserInfoBox
                             userInfo={userInfo}
@@ -96,6 +144,36 @@ const Edit = ({ setAuth }) => {
                             }
                         />
                     </div>
+                    <Dialog
+                        open={openUserAccountCreateForm}
+                        onClose={handleClickCloseUserAccountCreateForm}
+                        maxWidth="xs"
+                        fullWidth="true"
+                    >
+                        <DialogTitle>Create Your Account</DialogTitle>
+                        <DialogContent dividers>
+                            <CreateAccount />
+                        </DialogContent>
+                        <DialogActions>
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleClickCloseUserAccountCreateForm}
+                                sx={{
+                                    position: "absolute",
+                                    right: 8,
+                                    top: 8,
+                                    color: (theme) => theme.palette.grey[500],
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Button
+                                onClick={handleClickCloseUserAccountCreateForm}
+                            >
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                     {/* User Account Form Dialog */}
                     <Dialog
                         open={openUserAccountUpdateForm}

@@ -36,6 +36,7 @@ function App() {
 
     useEffect(() => {
         isAuth();
+        console.log(window.OmiseCard)
     }, []);
 
     return (
